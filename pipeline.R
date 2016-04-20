@@ -4,6 +4,20 @@
 # library(znc0)
 library(dplyr)
 
+# exploratory data analysis
+
+# numerical summaries
+
+# one-dimensional
+sample_clicks %>% magrittr::extract2("Item_ID") %>% table(useNA = "always") %>% "/"(nrow(sample_clicks)) %>% sort(decreasing = TRUE) %>% head(n = 10)
+sample_clicks %>% magrittr::extract2("Category") %>% table(useNA = "always") %>% "/"(nrow(sample_clicks)) %>% sort(decreasing = TRUE) %>% head(n = 10)
+sample_clicks %>% group_by(Session_ID) %>% summarize(dcnt_item = n_distinct(Item_ID)) %>% ungroup() %>% magrittr::extract2("dcnt_item") %>% quantile(probs = seq(0, 1, 0.10))
+sample_clicks %>% group_by(Session_ID) %>% summarize(dcnt_ctgy = n_distinct(Category)) %>% ungroup() %>% magrittr::extract2("dcnt_ctgy") %>% quantile(probs = seq(0, 1, 0.10))
+sample_clicks %>% group_by(Session_ID) %>% summarize(drtn = max(Timestamp) - min(Timestamp)) %>% ungroup() %>% magrittr::extract2("drtn") %>% quantile(probs = seq(0, 1, 0.10))
+sample_clicks %>% select(Category, Item_ID) %>% group_by(Category) %>% summarize(dcnt_item = n_distinct(Item_ID)) %>% ungroup() %>% arrange(-dcnt_item)
+
+# two-dimensional
+
 # create features
 z_clicks <- sample_clicks %>%
     arrange(Session_ID, -as.integer(Timestamp)) %>%
