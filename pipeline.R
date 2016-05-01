@@ -1,10 +1,45 @@
 #!/usr/bin/env Rscript
 
-# load packages
-# library(znc0)
+# load packages-----------------------------------------------------------------
+library(znc0)
+library(readr)
+library(ROSE)
 library(dplyr)
 
-# exploratory data analysis
+# load data---------------------------------------------------------------------
+# (samples of clicks and buys are available by default)
+# (not necessary to load all data into RAM just to test pipeline and functions)
+# should we use only samples?
+ind_sample <- FALSE
+if (!ind_sample) {
+    # load clickstream
+    sample_clicks <- read_csv(
+        # file = "/my/path/to/yoochoose-clicks.dat",
+        file = "tmp/yoochoose-clicks.dat",
+        col_names = c("Session_ID", "Timestamp", "Item_ID", "Category"),
+        col_types = list(
+            col_character(), #Session_ID
+             col_datetime(), #Timestamp
+            col_character(), #Item_ID
+            col_character()  #Category
+        )
+    )
+    # load buys
+    sample_buys <- read_csv(
+        # file = "/my/path/to/yoochoose-clicks.dat",
+        file = "tmp/yoochoose-buys.dat",
+        col_names = c("Session_ID", "Timestamp", "Item_ID", "Price", "Quantity"),
+        col_types = list(
+            col_character(), #Session_ID
+             col_datetime(), #Timestamp
+            col_character(), #Item_ID
+              col_integer(), #Price
+              col_integer()  #Quantity
+        )
+    )
+}
+
+# exploratory data analysis-----------------------------------------------------
 
 # numerical summaries
 
@@ -85,6 +120,24 @@ train_rose <- ROSE::ROSE(
     data = train,
     seed = 3
 )$data
+fit_rose <- glm(
+    formula = ind_buy ~ mnth + dow + hr + drtn + cnt_wbpg + cnt_itm + cnt_ctgry,
+    family = binomial(link = "logit"),
+    data = train_rose
+)
+# summary(fit_rose)
+# pscl::pR2(fit_rose)
+
+# accuracy
+pred_rose <- predict(
+    object = fit_rose,
+    newdata = test,
+    type = "response"
+)
+ROSE::roc.curve(
+    response = test$ind_buy,
+    predicted = pred_rose
+)
 
 
 

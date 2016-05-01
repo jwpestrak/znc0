@@ -1,0 +1,18 @@
+Package: znc0
+Type: Package
+Title: Predict and Present User Behavior Based on Clickstream Data
+Version: 0.1.0
+Authors@R: person("James", "Pestrak", email = "james.w.pestrak@gmail.com", role = c("aut", "cre"))
+Description: Functions and scripts for analyzing clickstream data.
+Depends:
+    R (>= 3.2.3)
+License: What license is it under?
+Imports:
+    dplyr (>= 0.4.3),
+    lubridate (>= 1.5.6),
+    readr (>= 0.2.2),
+    reshape2 (>= 1.4.1),
+    ROSE (>= 0.0.3),
+    sets (>= 1.0.16)
+LazyData: TRUE
+RoxygenNote: 5.0.1
