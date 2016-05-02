@@ -146,9 +146,11 @@ dta_inpt <- inner_join(
 # Partition into train and test-------------------------------------------------
 
 # Let's split data based on cnt_pc
-dta_inpt_gt2 <- dta_inpt %>% filter(cnt_pc > 2)
-dta_inpt_lte2 <- dta_inpt %>% filter(cnt_pc <= 2)
+# dta_inpt_gt2 <- dta_inpt %>% filter(cnt_pc > 2)
+# dta_inpt_lte2 <- dta_inpt %>% filter(cnt_pc <= 2)
 # dta_inpt <- dta_inpt_gt2
+dta_inpt_gt2 <- dta_inpt_solution %>% filter(cnt_pc > 2)
+dta_inpt_lte2 <- dta_inpt_solution %>% filter(cnt_pc <= 2)
 
 sample_rate <- 0.70
 sample_idx <- sample(1:nrow(dta_inpt), floor(nrow(dta_inpt) * sample_rate))
