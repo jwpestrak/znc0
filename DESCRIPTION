@@ -13,6 +13,7 @@ Imports:
     readr (>= 0.2.2),
     reshape2 (>= 1.4.1),
     ROSE (>= 0.0.3),
+    rpart (>= 4.1.10),
     sets (>= 1.0.16)
 LazyData: TRUE
 RoxygenNote: 5.0.1
